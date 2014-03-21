@@ -1,0 +1,38 @@
+h1 {
+ font-family: 'EB Garamond', serif;
+ text-align: center;
+ margin: 0;
+ color: purple;
+}
+
+div.new_todo {
+  padding: 1em;
+  border: 3px dashed purple;
+  margin: 0.618em;
+}
+
+div.todo_tile {
+  padding: 0.618em;
+  border: 1px dashed purple;
+  margin-left: 0.618em;
+  margin-right: 0.618em;
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+div.todo_tile > p {
+  padding: 2px;
+  border-bottom: 1px solid gray;
+  margin: 0.18em;
+}
+
+.cmpl {
+  text-decoration: line-through;
+}
+
+#sort, #sortdd {
+  cursor: pointer;
+  margin: 2px;
+}
+
+

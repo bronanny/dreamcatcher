@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Visualize Stat</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="/o/static/css/site.css" type="text/css" />
+<link rel="stylesheet" href="/o/static/css/pikaday.css">
+<script type="text/javascript" src="/o/static/js/knockout.js"></script>
+<script type="text/javascript" src="/o/static/js/underscore.js"></script>
+<script type="text/javascript" src="/o/static/js/zepto.js"></script>
+<script type="text/javascript" src="/o/static/js/moment.js"></script>
+<script type="text/javascript" src="/o/static/js/pikaday.js"></script>
+<script type="text/javascript" src="/o/static/js/d3/d3.js"></script>
+<script type="text/javascript" src="/o/static/js/main.js"></script>
+<style>
+
+.chart {
+  background-color: #fff;
+}
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: #888;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+
+path.line {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #fff;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .25;
+}
+</style>
+</head>
+<body>
+<h1>Visualize Stat</span></h1>
+
+<svg class="chart"></svg>
+
+<br><br><br><br><br><br><br><br>
+
+<div data-bind="foreach: stat_names">
+  <div class="todo_tile">
+    <a data-bind="attr: { href: href }">
+      <span data-bind="text: name"></span>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
+
