@@ -35,4 +35,53 @@ div.todo_tile > p {
   margin: 2px;
 }
 
+/*
+
+Stuff for stylig the SVG graph.
+
+*/
+
+.chart {
+  background-color: #fff;
+}
+
+.chart rect {
+  fill: steelblue;
+}
+
+.chart text {
+  fill: #888;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+
+
+path.line {
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.5px;
+}
+
+path.area {
+  fill: #e7e7e7;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.x.axis line {
+  stroke: #000;
+  stroke-opacity: .25;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .25;
+}
 
