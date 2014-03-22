@@ -1,5 +1,5 @@
 from json import dumps
-from os import chdir, walk, sep
+from os import chdir, walk, sep, getcwd
 from os.path import join
 from struct import unpack
 from whisper import __readHeader, pointSize, pointFormat
@@ -24,16 +24,20 @@ def extract_archives(fh):
 
 
 def walk_whisper(path):
-  data = {}
-  chdir(path)
-  for dirpath, _, filenames in walk('.'):
-    for name in filenames:
-      if not name.endswith('.wsp'):
-        continue
-      fn = join(dirpath, name)
-      stat_name = fn[2:-4].replace(sep, '.')
-      with open(fn, 'rb') as fh:
-        data[stat_name] = extract_archives(fh)
+  cwd = getcwd()
+  try:
+    data = {}
+    chdir(path)
+    for dirpath, _, filenames in walk('.'):
+      for name in filenames:
+        if not name.endswith('.wsp'):
+          continue
+        fn = join(dirpath, name)
+        stat_name = fn[2:-4].replace(sep, '.')
+        with open(fn, 'rb') as fh:
+          data[stat_name] = extract_archives(fh)
+  finally:
+    chdir(cwd)
   return data
 
 
