@@ -38,6 +38,31 @@ def acc(line_source):
 
 
 if __name__ == '__main__':
-  client = StatsdClient(prefix='foo.mongo')
+  from argparse import ArgumentParser
+
+  parser = ArgumentParser()
+  parser.add_argument(
+    '-I', '--IP',
+    help='Host or IP address to which to send stats.',
+    default='',
+    )
+  parser.add_argument(
+    '-p', '--port',
+    help='Port on which to listen.',
+    type=int,
+    default=8125,
+    )
+  parser.add_argument(
+    '-P', '--prefix',
+    help='Tag to prefix to outgoing stats.',
+    default='mongotop',
+    )
+  args = parser.parse_args()
+
+  client = StatsdClient(
+    host=args.host,
+    port=args.port,
+    prefix=args.prefix,
+    )
   main(acc(sys.stdin.readline), client)
 
