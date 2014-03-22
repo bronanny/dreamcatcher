@@ -41,8 +41,16 @@ def walk_whisper(path):
 
 
 def static(resource_path, start_response):
-  start_response('200 OK', [('Content-type', 'text/html')])
+  start_response('200 OK', [('Content-type', ctype(resource_path))])
   return open(resource_path, 'rb')
+
+
+def ctype(path, types=dict(
+  css='text/css',
+  html='text/html',
+  js='application/javascript',
+  )):
+  return types[path.rpartition('.')[2]]
 
 
 def serve_path(content_path, whisper_path):
