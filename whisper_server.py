@@ -8,10 +8,12 @@ from whisper import __readHeader, pointSize, pointFormat
 def extract_archives(fh):
   header = __readHeader(fh)
   for archive in header['archives']:
+    n = archive['points']
     fh.seek(archive['offset'])
+    points = fh.read(n * pointSize)
     a = []
-    for _ in xrange(archive['points']):
-      packedPoint = fh.read(pointSize)
+    for i in xrange(0, n, pointSize):
+      packedPoint = points[i:i + pointSize]
       timestamp, value = unpack(pointFormat, packedPoint)
       if timestamp and value:
         a.append((timestamp, value))
