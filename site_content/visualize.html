@@ -11,20 +11,19 @@
 <script type="text/javascript" src="/o/static/js/moment.js"></script>
 <script type="text/javascript" src="/o/static/js/pikaday.js"></script>
 <script type="text/javascript" src="/o/static/js/d3/d3.js"></script>
+<script type="text/javascript" src="/o/static/js/pow_chart.js"></script>
 <script type="text/javascript" src="/o/static/js/main.js"></script>
 </head>
 <body>
 <h1>Visualize Stat</span></h1>
 
-<svg class="chart"></svg>
+<div class="chart"><svg></svg></div>
 
 <br><br><br><br><br><br><br><br>
 
 <div data-bind="foreach: stat_names">
-  <div class="todo_tile">
-    <a data-bind="attr: { href: href }">
-      <span data-bind="text: name"></span>
-    </a>
+  <div class="todo_tile" data-bind="click: $parent.getstat">
+    <span data-bind="text: $data"></span>
   </div>
 </div>
 
