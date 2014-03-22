@@ -5,9 +5,6 @@ from struct import unpack
 from whisper import __readHeader, pointSize, pointFormat
 
 
-ROOT_PATH = r'C:\Users\Jesse\Desktop\vag\dreamcatcher\dreamcatcher\site_content'
-
-
 def extract_archives(fh):
   header = __readHeader(fh)
   for archive in header['archives']:
@@ -41,14 +38,13 @@ def walk_whisper(path):
   return data
 
 
-def static(resource_name, environ, start_response):
-  f = open(resource_name, 'rb')
+def static(resource_path, start_response):
   start_response('200 OK', [('Content-type', 'text/html')])
-  return f
+  return open(resource_path, 'rb')
 
 
-def serve_path(path):
-  data = walk_whisper(path)
+def serve_path(content_path, whisper_path):
+  data = walk_whisper(whisper_path)
   for stat in data:
     data[stat] = dumps([data[stat]])
   stat_names = dumps({'stat_names': sorted(data)})
@@ -56,8 +52,8 @@ def serve_path(path):
   def whisper_app(environ, start_response):
     stat_name = environ['PATH_INFO'].strip('/')
     if stat_name.startswith('o/'):
-      resource = join(ROOT_PATH, stat_name[2:])
-      return static(resource, environ, start_response)
+      resource = join(content_path, stat_name[2:])
+      return static(resource, start_response)
     res = data.get(stat_name, '[]') if stat_name else stat_names
     start_response('200 OK', [('Content-type', 'application/json')])
     return [res]
@@ -66,8 +62,34 @@ def serve_path(path):
 
 
 if __name__ == '__main__':
+  from argparse import ArgumentParser
   from wsgiref.simple_server import make_server
-  path = r'C:\Users\Jesse\Desktop\vag\mongo-whisper\stats'
-  httpd = make_server('', 8000, serve_path(path))
+
+  parser = ArgumentParser()
+  parser.add_argument(
+    'whisper_path',
+    help='Path to the whisper database directory.',
+    )
+  parser.add_argument(
+    '-c', '--content_path',
+    help='Path to the directory containing the site_content directory.',
+    default='.',
+    )
+  parser.add_argument(
+    '-I', '--IP',
+    help='IP address to listen on',
+    default='',
+    )
+  parser.add_argument(
+    '-p', '--port',
+    help='port to listen on',
+    type=int,
+    default=8000,
+    )
+  args = parser.parse_args()
+
+  content_path = join(args.content_path, 'site_content')
+  wsgi_app = serve_path(content_path, args.whisper_path)
+  httpd = make_server(args.IP, args.port, wsgi_app)
   print "Serving on port 8000..."
   httpd.serve_forever()
