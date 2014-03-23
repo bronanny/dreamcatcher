@@ -7,20 +7,29 @@ var data = [[1395356639, 10.0], [1395356640, 10.0], [1395356641, 12.0], [1395356
 
 var ViewModel = {
   stat_name:ko.observable('Stat'),
+  stat_data:ko.observable({
+  	name: "",
+  	maxRetention: "",
+  	xFilesFactor: "",
+  	aggregationMethod: "",
+  	archives: []
+  }),
   stat_names: ko.observableArray(),
   loading: ko.observable(false),
 
   getstat: function (stat_name) {
     $.getJSON('/' + stat_name, function(data){
-      $('.chart').find('svg').children().remove();
+//      $('.chart').find('svg').children().remove();
 
 	  console.log(data);
-	  var poop = data[0].archives[0].points; 
-	  console.log(poop); 
-	  var p = powchart();
-	  var d = d3.select('.chart');
-	  d.data([poop]);
-	  d.call(p);
+	  data.name = stat_name
+	  ViewModel.stat_data(data)
+	  // var poop = data[0].archives[0].points; 
+	  // console.log(poop); 
+	  // var p = powchart();
+	  // var d = d3.select('.chart');
+	  // d.data([poop]);
+	  // d.call(p);
 //	  console.log(data); 
 	});
   }
