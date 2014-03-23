@@ -35,6 +35,17 @@ div.todo_tile > p {
   margin: 2px;
 }
 
+.per_archive {
+  padding-left: 2em;
+}
+
+.per_archive ul {
+  float: left;
+  background-color: #eee;
+  padding: 0.5em 1em 0.5em 2em;
+  margin-right: 1em;
+}
+
 /*
 
 Stuff for stylig the SVG graph.

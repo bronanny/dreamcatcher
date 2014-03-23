@@ -1,4 +1,5 @@
 
+
 function powchart() {
 
   var margin = {top: 20, right: 20, bottom: 20, left: 20},
@@ -11,9 +12,7 @@ function powchart() {
         .orient("bottom")
         .tickSize(6, 0)
         .tickSubdivide(true)
-        .tickFormat(function(tick){
-          return moment.unix(tick).calendar();
-        }),
+        .tickFormat(unix_to_calendar),
       yAxis = d3.svg.axis()
         .scale(yScale)
         .ticks(4)
@@ -21,12 +20,9 @@ function powchart() {
 
   function chart(svgchart, data) {
 
-    if (data.length === 0) {
-      data = [[0, 0]];
-    }
+    if (data.length === 0) { data = [[0, 0]]; };
 
-//    var blip_width = width / data.length;
-    var w = width - margin.left - margin.right - 2;
+    var w = width - margin.left - margin.right;
 
     xScale
       .domain([data[0][0], data[data.length - 1][0]])

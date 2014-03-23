@@ -9,26 +9,37 @@
 <script type="text/javascript" src="/o/static/js/underscore.js"></script>
 <script type="text/javascript" src="/o/static/js/zepto.js"></script>
 <script type="text/javascript" src="/o/static/js/moment.js"></script>
+<script type="text/javascript">
+  function unix_to_calendar(tick){ return moment.unix(tick).calendar(); }
+  function seconds_to_string (secs) {
+    return moment.duration(secs, 'seconds').humanize();
+  }
+</script>
 <script type="text/javascript" src="/o/static/js/pikaday.js"></script>
 <script type="text/javascript" src="/o/static/js/d3/d3.js"></script>
 <script type="text/javascript" src="/o/static/js/pow_chart.js"></script>
 <script type="text/javascript" src="/o/static/js/main.js"></script>
 </head>
 <body>
-<h1>Visualize Stat</span></h1>
-
+<h1>Visualize <span data-bind="text: stat_name">Stat</span></h1>
 
 <div class="info" data-bind="with: stat_data">
   <ul>
     <li>name: <span data-bind="text: name"></span></li>
-    <li>maxRetention: <span data-bind="text: maxRetention"></span></li>
+    <li>maxRetention:
+      <span data-bind="text: seconds_to_string(maxRetention)"></span>
+      (<span data-bind="text: maxRetention"></span>)
+    </li>
     <li>xFilesFactor: <span data-bind="text: xFilesFactor"></span></li>
-	<li>aggregationMethod: <span data-bind="text: aggregationMethod"></span></li>
+  <li>aggregationMethod: <span data-bind="text: aggregationMethod"></span></li>
   </ul>
-  <div style="padding-left: 2em;" data-bind="foreach: archives">
-  	<ul style="float: left;">
-      <li>retention: <span data-bind="text: retention"></span>
-      <li>secondsPerPoint: <span data-bind="text: secondsPerPoint"></span>
+  <div class="per_archive" data-bind="foreach: archives">
+    <ul>
+      <li>retention:
+        <span data-bind="text: seconds_to_string(retention)"></span>
+        (<span data-bind="text: retention"></span>)
+      </li>
+      <li>secondsPerPoint: <span data-bind="text: secondsPerPoint"></span></li>
     </ul>
   </div>
 </div>
@@ -41,4 +52,3 @@
 
 </body>
 </html>
-

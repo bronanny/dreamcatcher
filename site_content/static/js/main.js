@@ -20,8 +20,9 @@ var ViewModel = {
   getstat: function (stat_name) {
     $.getJSON('/' + stat_name, function(data){
 //	  console.log(data);
-	  data.name = stat_name
-	  ViewModel.stat_data(data)
+	  data.name = stat_name;
+	  ViewModel.stat_name(stat_name);
+	  ViewModel.stat_data(data);
       powchart()(d3.select('.chart'), data.archives[0].points)
 	});
   }
