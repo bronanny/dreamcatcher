@@ -15,10 +15,11 @@ def extract_archives(fh):
     for i in xrange(0, n * pointSize, pointSize):
       packedPoint = points[i:i + pointSize]
       timestamp, value = unpack(pointFormat, packedPoint)
-      if timestamp and value:
-        a.append((timestamp, value))
+      a.append((timestamp, value or 0))
     a.sort(key=lambda p: p[0])
-    archive['points'] = a
+    archive['most_recent'] = a[-1][0] if a else -1
+    archive['oldest'] = a[0][0] if a else -1
+    archive['points'] = [p for p in a if p[1] is not None]
   return header
 
 

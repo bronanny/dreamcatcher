@@ -22,22 +22,13 @@ var ViewModel = {
       data.name = stat_name;
       ViewModel.stat_name(stat_name);
       ViewModel.stat_data(data);
-      ViewModel.p(d3.select('.chart'), data.archives[0].points)
+      console.log(data);
+      ViewModel.p(d3.select('.chart'), data.archives[0])
       });
   },
 
-  most_recent: function (data) {
-    if (data.length === 0) {
-      return "(no data)";
-    }
-    return unix_to_calendar(data[data.length - 1][0]);
-  },
-
-  oldest: function (data) {
-    if (data.length === 0) {
-      return "(no data)";
-    }
-    return unix_to_calendar(data[0][0]);
+  tt: function (t) {
+    return (t === -1) ? "(no data)" : unix_to_calendar(t);
   }
 
 };
@@ -52,6 +43,10 @@ $(document).ready(function(){
   $.get('/', function(data){ ViewModel.stat_names(data.stat_names); });
 
   ViewModel.p = powchart();
-  ViewModel.p(d3.select('.chart'), data);
+  ViewModel.p(d3.select('.chart'), {
+    points: data,
+    oldest: data[data.length - 1][0],
+    most_recent: data[0][0],
+  });
 
 });

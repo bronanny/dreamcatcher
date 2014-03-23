@@ -10,10 +10,12 @@
 <script type="text/javascript" src="/o/static/js/zepto.js"></script>
 <script type="text/javascript" src="/o/static/js/moment.js"></script>
 <script type="text/javascript">
-  function unix_to_calendar(tick){ return moment.unix(tick).calendar(); }
-  function seconds_to_string (secs) {
-    return (secs === 1 ? "one second"
-                       : moment.duration(secs, 'seconds').humanize());
+  function unix_to_calendar(tick) { return moment.unix(tick).calendar(); }
+  function seconds_to_string(seconds) {
+    return (seconds === 1 
+      ? "one second"
+      : moment.duration(seconds, 'seconds').humanize()
+    );
   }
 </script>
 <script type="text/javascript" src="/o/static/js/pikaday.js"></script>
@@ -45,12 +47,9 @@
        (<span data-bind="text: secondsPerPoint"></span>)
       </li>
 
-      <li>Most recent:
-       <span data-bind="text: $root.most_recent(points)"></span>
-      </li>
-      <li>Oldest:
-       <span data-bind="text: $root.oldest(points)"></span>
-      </li>
+      <li>Most recent: <span data-bind="text: $root.tt(most_recent)"></span></li>
+      <li>Oldest: <span data-bind="text: $root.tt(oldest)"></span></li>
+      <li>Number of Samples: <span data-bind="text: points.length"></span></li>
      
     </ul>
   </div>
@@ -59,7 +58,7 @@
 <div><svg class="chart"></svg></div>
 
 <div data-bind="foreach: stat_names">
-  <a href="#" data-bind="text: $data, click: $parent.getstat"></a>
+  <a class="stat" href="#" data-bind="text: $data, click: $parent.getstat"></a>
 </div>
 
 </body>

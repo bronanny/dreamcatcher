@@ -18,14 +18,16 @@ function powchart() {
         .ticks(4)
         .orient("right");
 
-  function chart(svgchart, data) {
+  function chart(svgchart, archive) {
+
+    var data = archive.points;
 
     if (data.length === 0) { data = [[0, 0]]; };
 
     var w = width - margin.left - margin.right;
 
     xScale
-      .domain([data[0][0], data[data.length - 1][0]])
+      .domain([archive.oldest, archive.most_recent])
       .range([margin.left, w]);
 
     yScale
