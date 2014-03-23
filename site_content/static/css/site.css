@@ -46,6 +46,15 @@ div.todo_tile > p {
   margin-right: 1em;
 }
 
+a.stat {
+}
+
+a.stat:hover {
+  color: #fff;
+  background-color: blue;
+  padding: 0.5em 1em 0.5em 1em;
+}
+
 /*
 
 Stuff for stylig the SVG graph.
