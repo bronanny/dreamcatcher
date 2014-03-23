@@ -201,6 +201,11 @@ def enableDebug():
   def endBlock(name):
     debug("%s took %.5f seconds" % (name,time.time() - __timingBlocks.pop(name)))
 
+def unpackMetadata(packedMetadata, name=''):
+  try:
+    return struct.unpack(metadataFormat, packedMetadata)
+  except:
+    raise CorruptWhisperFile("Unable to read header", name)
 
 def __readHeader(fh):
   info = __headerCache.get(fh.name)
@@ -211,44 +216,34 @@ def __readHeader(fh):
   fh.seek(0)
   packedMetadata = fh.read(metadataSize)
 
-  try:
-    (
-      aggregationType,
-      maxRetention,
-      xff,
-      archiveCount,
-      ) = struct.unpack(metadataFormat, packedMetadata)
-  except:
-    raise CorruptWhisperFile("Unable to read header", fh.name)
+  (aggregationType, maxRetention,
+   xff, archiveCount) = unpackMetadata(packedMetadata, fh.name)
 
   archives = []
 
   for i in xrange(archiveCount):
     packedArchiveInfo = fh.read(archiveInfoSize)
     try:
-      (
-        offset,
-        secondsPerPoint,
-        points,
-        ) = struct.unpack(archiveInfoFormat, packedArchiveInfo)
+      (offset, secondsPerPoint,
+       points) = struct.unpack(archiveInfoFormat, packedArchiveInfo)
     except:
       raise CorruptWhisperFile("Unable to read archive%d metadata" % i, fh.name)
 
     archiveInfo = {
-      'offset' : offset,
-      'secondsPerPoint' : secondsPerPoint,
-      'points' : points,
-      'retention' : secondsPerPoint * points,
-      'size' : points * pointSize,
+      'offset': offset,
+      'secondsPerPoint': secondsPerPoint,
+      'points': points,
+      'retention': secondsPerPoint * points,
+      'size': points * pointSize,
     }
     archives.append(archiveInfo)
 
   fh.seek(originalOffset)
   info = {
-    'aggregationMethod' : aggregationTypeToMethod.get(aggregationType, 'average'),
-    'maxRetention' : maxRetention,
-    'xFilesFactor' : xff,
-    'archives' : archives,
+    'aggregationMethod': aggregationTypeToMethod.get(aggregationType, 'average'),
+    'maxRetention': maxRetention,
+    'xFilesFactor': xff,
+    'archives': archives,
   }
   if CACHE_HEADERS:
     __headerCache[fh.name] = info
@@ -276,15 +271,9 @@ xFilesFactor specifies the fraction of data points in a propagation interval tha
       fcntl.flock( fh.fileno(), fcntl.LOCK_EX )
 
     packedMetadata = fh.read(metadataSize)
-    try:
-      (
-        aggregationType,
-        maxRetention,
-        xff,
-        archiveCount,
-        ) = struct.unpack(metadataFormat, packedMetadata)
-    except:
-      raise CorruptWhisperFile("Unable to read header", fh.name)
+
+    (aggregationType, maxRetention,
+     xff, archiveCount) = unpackMetadata(packedMetadata, fh.name)
 
     newAggregationType = struct.pack(longFormat, aggregationMethodType)
 
@@ -568,12 +557,9 @@ def file_update(fh, value, timestamp):
 
   header = __readHeader(fh)
   now = int(time.time())
-  if timestamp is None:
-    timestamp = now
-
-  timestamp = int(timestamp)
+  timestamp = now if timestamp is None else int(timestamp)
   diff = now - timestamp
-  if not ((diff < header['maxRetention']) and diff >= 0):
+  if diff >= header['maxRetention'] or diff < 0:
     raise TimestampNotCovered("Timestamp not covered by any archives in "
       "this database.")
 
@@ -613,7 +599,6 @@ def file_update(fh, value, timestamp):
   if AUTOFLUSH:
     fh.flush()
     os.fsync(fh.fileno())
-
 
 
 def update_many(path, points):
@@ -827,14 +812,14 @@ archive on a read and request data older than the archive's retention
   untilInterval = int( untilTime - (untilTime % archive['secondsPerPoint']) ) + archive['secondsPerPoint']
   fh.seek(archive['offset'])
   packedPoint = fh.read(pointSize)
-  (baseInterval,baseValue) = struct.unpack(pointFormat,packedPoint)
+  baseInterval, baseValue = struct.unpack(pointFormat,packedPoint)
 
   if baseInterval == 0:
     step = archive['secondsPerPoint']
     points = (untilInterval - fromInterval) / step
-    timeInfo = (fromInterval,untilInterval,step)
+    timeInfo = fromInterval, untilInterval, step
     valueList = [None] * points
-    return (timeInfo,valueList)
+    return timeInfo, valueList
 
   #Determine fromOffset
   timeDistance = fromInterval - baseInterval
