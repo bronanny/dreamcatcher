@@ -19,18 +19,10 @@ var ViewModel = {
 
   getstat: function (stat_name) {
     $.getJSON('/' + stat_name, function(data){
-//      $('.chart').find('svg').children().remove();
-
-	  console.log(data);
+//	  console.log(data);
 	  data.name = stat_name
 	  ViewModel.stat_data(data)
-	  // var poop = data[0].archives[0].points; 
-	  // console.log(poop); 
-	  // var p = powchart();
-	  // var d = d3.select('.chart');
-	  // d.data([poop]);
-	  // d.call(p);
-//	  console.log(data); 
+      powchart()(d3.select('.chart'), data.archives[0].points)
 	});
   }
 
@@ -46,8 +38,6 @@ $(document).ready(function(){
   $.get('/', function(data){ ViewModel.stat_names(data.stat_names); });
 
   var p = powchart();
-  var d = d3.select('.chart');
-  d.data([data]);
-  d.call(p);
-
+  var svg = d3.select('.chart');
+  p(svg, data)
 });

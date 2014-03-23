@@ -21,53 +21,55 @@ function powchart() {
         .ticks(4)
         .orient("right");
 
-  function chart(selection) {
-    selection.each(function(data, i) {
+  function chart(svgchart, data) {
 
-      var blip_width = width / data.length;
-      var w = width - margin.left - margin.right - blip_width;
+    if (data.length === 0) {
+      data = [[0, 0]];
+    }
 
-      xScale
-        .domain([data[0][0], data[data.length - 1][0]])
-        .range([margin.left, w]);
+//    var blip_width = width / data.length;
+    var w = width - margin.left - margin.right - 2;
 
-      yScale
-        .domain([0, 100])
-        //.domain([0, d3.max(data, yValue)])
-        .range([height - margin.top - margin.bottom, margin.top]);
+    xScale
+      .domain([data[0][0], data[data.length - 1][0]])
+      .range([margin.left, w]);
 
-      yAxis.tickSize(-(w - margin.left));
-        
-      var svgchart = d3.select(this).selectAll("svg")
-          .attr("width", width)
-          .attr("height", height);
+    yScale
+      .domain([0, 100])
+      //.domain([0, d3.max(data, yValue)])
+      .range([height - margin.top - margin.bottom, margin.top]);
 
-      var bar = svgchart.selectAll("rect")
-            .data(data)
-//            .data(data.archives[i].points)
-          .enter().append("rect")
-            .attr("title", function(d) { return "" + d[1]; })
-            .attr("x", function(d) { return xScale(d[0]); })
-            .attr("y", function(d) { return yScale(d[1]); })
-            .attr("width", blip_width)
-            .attr("height", 2);
+    yAxis.tickSize(-(w - margin.left));
+      
+    svgchart.attr("width", width).attr("height", height);
 
-      // Add the y-axis.
-      svgchart.append("g")
-          .attr("class", "y axis")
-          .attr("transform", "translate(" + (width - margin.right- margin.left) + ",0)")
-          .call(yAxis);
+    var bar = svgchart.selectAll("rect")
+      .data(data);
+    bar.exit().remove();
+    bar.enter().append("rect")
+      .attr("height", 2)
+      .attr("width", 2);
+    bar
+      .attr("title", function(d) { return "" + d[1]; })
+      .attr("x", function(d) { return xScale(d[0]); })
+      .attr("y", function(d) { return yScale(d[1]); });
 
-      // Add the x-axis.
-      svgchart.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
-          .call(xAxis)
-        .selectAll("text")
-          .attr("transform", "rotate(12)")
-          .style("text-anchor", "start");
+    svgchart.selectAll("g").remove();
 
-    });
+    // Add the y-axis.
+    svgchart.append("g")
+        .attr("class", "y axis")
+        .attr("transform", "translate(" + (width - margin.right- margin.left) + ",0)")
+        .call(yAxis);
+
+    // Add the x-axis.
+    svgchart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + (height - margin.top - margin.bottom) + ")")
+        .call(xAxis)
+      .selectAll("text")
+        .attr("transform", "rotate(12)")
+        .style("text-anchor", "start");
 
   }
 
