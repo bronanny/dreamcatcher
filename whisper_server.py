@@ -56,7 +56,7 @@ def ctype(path, types=dict(
 def serve_path(content_path, whisper_path):
   data = walk_whisper(whisper_path)
   for stat in data:
-    data[stat] = dumps([data[stat]])
+    data[stat] = dumps(data[stat])
   stat_names = dumps({'stat_names': sorted(data)})
 
   def whisper_app(environ, start_response):
@@ -64,7 +64,7 @@ def serve_path(content_path, whisper_path):
     if stat_name.startswith('o/'):
       resource = join(content_path, stat_name[2:])
       return static(resource, start_response)
-    res = data.get(stat_name, '[]') if stat_name else stat_names
+    res = data.get(stat_name, '{}') if stat_name else stat_names
     start_response('200 OK', [('Content-type', 'application/json')])
     return [res]
 
