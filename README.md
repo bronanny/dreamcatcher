@@ -13,4 +13,4 @@ Hekad has a lot of other capabilities, including filters and such written in Lua
 
 The mongotop statsd script takes in the output of mongotop and sends UDP statsd messages to a listener.
 
-The ``whisper_server.py`` script is a first draft of a very simple way to access and graph the stats in a whisper database.  Right now it simply loads all the data in a given whisper directory and converts it to JSON representation.  It then serves the JSON at URLs given by the (dotted) name of the stat.  It also serves the static content of a single-page web "app" that uses D3.js to generate nice charts and graphs, fetching stat data from the server via AJAX requests for the JSON stats.
+The ``whisper_server.py`` script is a first draft of a very simple way to access and graph the stats in a whisper database.  Right now it simply loads all the data in a given whisper directory and converts it to JSON representation.  It then serves the JSON at URLs given by the (dotted) name of the stat.  It also serves the static content of a single-page web "app" that uses D3.js to generate nice charts and graphs, fetching stat data from the server via AJAX requests.

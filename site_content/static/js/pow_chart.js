@@ -4,8 +4,6 @@ function powchart() {
   var margin = {top: 20, right: 20, bottom: 20, left: 20},
       width = 1024,
       height = 320,
-      xValue = function(d) { return d[0]; },
-      yValue = function(d) { return d[1]; },
       xScale = d3.scale.linear(),
       yScale = d3.scale.linear(),
       xAxis = d3.svg.axis()
@@ -88,18 +86,6 @@ function powchart() {
   chart.height = function(_) {
     if (!arguments.length) return height;
     height = _;
-    return chart;
-  };
-
-  chart.x = function(_) {
-    if (!arguments.length) return xValue;
-    xValue = _;
-    return chart;
-  };
-
-  chart.y = function(_) {
-    if (!arguments.length) return yValue;
-    yValue = _;
     return chart;
   };
 
