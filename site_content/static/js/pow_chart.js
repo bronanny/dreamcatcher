@@ -4,7 +4,7 @@ function powchart() {
 
   var margin = {top: 20, right: 20, bottom: 20, left: 20},
       width = 1024,
-      height = 320,
+      height = 240,
       xScale = d3.scale.linear(),
       yScale = d3.scale.linear(),
       xAxis = d3.svg.axis()

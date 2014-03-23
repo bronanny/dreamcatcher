@@ -12,7 +12,8 @@
 <script type="text/javascript">
   function unix_to_calendar(tick){ return moment.unix(tick).calendar(); }
   function seconds_to_string (secs) {
-    return moment.duration(secs, 'seconds').humanize();
+    return (secs === 1 ? "one second"
+                       : moment.duration(secs, 'seconds').humanize());
   }
 </script>
 <script type="text/javascript" src="/o/static/js/pikaday.js"></script>
@@ -39,7 +40,18 @@
         <span data-bind="text: seconds_to_string(retention)"></span>
         (<span data-bind="text: retention"></span>)
       </li>
-      <li>secondsPerPoint: <span data-bind="text: secondsPerPoint"></span></li>
+      <li>secondsPerPoint:
+       <span data-bind="text: seconds_to_string(secondsPerPoint)"></span>
+       (<span data-bind="text: secondsPerPoint"></span>)
+      </li>
+
+      <li>Most recent:
+       <span data-bind="text: $root.most_recent(points)"></span>
+      </li>
+      <li>Oldest:
+       <span data-bind="text: $root.oldest(points)"></span>
+      </li>
+     
     </ul>
   </div>
 </div>
