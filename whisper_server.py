@@ -12,7 +12,7 @@ def extract_archives(fh):
     fh.seek(archive['offset'])
     points = fh.read(n * pointSize)
     a = []
-    for i in xrange(0, n, pointSize):
+    for i in xrange(0, n * pointSize, pointSize):
       packedPoint = points[i:i + pointSize]
       timestamp, value = unpack(pointFormat, packedPoint)
       if timestamp and value:
