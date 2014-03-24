@@ -46,9 +46,6 @@ div.todo_tile > p {
   margin-right: 1em;
 }
 
-a.stat {
-}
-
 a.stat:hover {
   color: #fff;
   background-color: blue;

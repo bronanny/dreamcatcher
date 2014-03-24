@@ -22,13 +22,18 @@ var ViewModel = {
       data.name = stat_name;
       ViewModel.stat_name(stat_name);
       ViewModel.stat_data(data);
-      console.log(data);
+//      console.log(data);
       ViewModel.p(d3.select('.chart'), data.archives[0])
       });
   },
 
   tt: function (t) {
     return (t === -1) ? "(no data)" : unix_to_calendar(t);
+  },
+
+  view_archive: function (archive) {
+    // console.log(archive);
+    ViewModel.p(d3.select('.chart'), archive)
   }
 
 };
