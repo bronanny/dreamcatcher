@@ -27,7 +27,7 @@ function powchart(tick_formatter) {
     var w = width - margin.left - margin.right;
 
     xScale
-      .domain([archive.oldest, archive.most_recent])
+      .domain([archive.most_recent - archive.retention, archive.most_recent])
       .range([margin.left, w]);
 
     yScale

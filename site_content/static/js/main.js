@@ -63,6 +63,7 @@ $(document).ready(function(){
     points: data,
     oldest: data[data.length - 1][0],
     most_recent: data[0][0],
+    retention: data[0][0] - data[data.length - 1][0]
   });
 
 });
