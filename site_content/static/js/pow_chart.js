@@ -1,6 +1,6 @@
 
 
-function powchart() {
+function powchart(tick_formatter) {
 
   var margin = {top: 20, right: 20, bottom: 20, left: 20},
       width = 1024,
@@ -12,7 +12,7 @@ function powchart() {
         .orient("bottom")
         .tickSize(6, 0)
         .tickSubdivide(true)
-        .tickFormat(unix_to_calendar),
+        .tickFormat(tick_formatter),
       yAxis = d3.svg.axis()
         .scale(yScale)
         .ticks(4)

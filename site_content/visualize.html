@@ -9,15 +9,6 @@
 <script type="text/javascript" src="/o/static/js/underscore.js"></script>
 <script type="text/javascript" src="/o/static/js/zepto.js"></script>
 <script type="text/javascript" src="/o/static/js/moment.js"></script>
-<script type="text/javascript">
-  function unix_to_calendar(tick) { return moment.unix(tick).calendar(); }
-  function seconds_to_string(seconds) {
-    return (seconds === 1 
-      ? "one second"
-      : moment.duration(seconds, 'seconds').humanize()
-    );
-  }
-</script>
 <script type="text/javascript" src="/o/static/js/pikaday.js"></script>
 <script type="text/javascript" src="/o/static/js/d3/d3.js"></script>
 <script type="text/javascript" src="/o/static/js/pow_chart.js"></script>
