@@ -48,8 +48,7 @@
 
 <div><svg class="chart"></svg></div>
 
-<span data-bind="text: flot"></span>
-<p>Filter: </p><input data-bind="value: filter_term, valueUpdate: 'input'" /></p>
+<p>Filter: <input data-bind="value: filter_term, valueUpdate: 'input'" /></p>
 
 <div data-bind="foreach: stat_names">
   <a class="stat" href="#" data-bind="text: $data, click: $parent.getstat"></a>
